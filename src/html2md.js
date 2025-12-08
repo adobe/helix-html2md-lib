@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Adobe. All rights reserved.
+ * Copyright 2025 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/* eslint-disable no-continue */
+/* eslint-disable max-len, no-continue */
 import { unified } from 'unified';
 import stringify from 'remark-stringify';
 import parse from 'rehype-parse';
@@ -312,6 +312,20 @@ function cleanupFormats(tree) {
   });
 }
 
+/**
+ * Converts HTML content into Markdown.
+ *
+ * @async
+ * @param {string} html - The input HTML string to convert.
+ * @param {Object} opts - Options for the conversion process.
+ * @param {Logger} opts.log - Logger instance for logging messages.
+ * @param {string} opts.url - The source URL of the HTML (used for logging).
+ * @param {Object} [opts.mediaHandler] - Optional media handler for processing images.
+ * @param {string[]} [opts.externalImageUrlPrefixes] - Optional array of allowed external image URL prefixes.
+ * @param {number} [opts.maxImages] - Optional maximum number of images to process.
+ * @param {boolean} [opts.unspreadLists] - Whether to unspread lists in the output markdown.
+ * @returns {Promise<string>} The resulting Markdown string.
+ */
 export async function html2md(html, opts) {
   const { log, url, mediaHandler } = opts;
   const t0 = Date.now();

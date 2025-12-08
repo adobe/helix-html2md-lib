@@ -12,6 +12,7 @@
 
 /* eslint-env mocha */
 import assert from 'assert';
+import { SizeTooLargeException } from '@adobe/helix-mediahandler';
 import { processImages, TooManyImagesError, toSISize } from '../src/mdast-process-images.js';
 
 describe('Utils Test', () => {
@@ -39,10 +40,17 @@ describe('mdast-process-images Tests', () => {
   };
 
   const mockMediaHandler = {
+    _maxSize: 1024 * 1024,
     getBlob: async (url) => {
       processedUrls.push(url);
-      if (url === 'about:error') {
+      if (url === 'https://error.com') {
         throw new Error('Failed to get image');
+      }
+      if (url === 'https://fail.com') {
+        return null;
+      }
+      if (url.startsWith('https://large.com/')) {
+        throw new SizeTooLargeException('Image is too large');
       }
       return { uri: url };
     },
@@ -76,6 +84,16 @@ describe('mdast-process-images Tests', () => {
               url: 'https://regular-image.com/image.jpg',
               alt: 'Regular Image',
             },
+            {
+              type: 'image',
+              url: 'https://regular-image.com/image.jpg',
+              alt: '2nd Regular Image',
+            },
+            {
+              type: 'image',
+              url: '/image.jpg',
+              alt: 'relative image',
+            },
           ],
         },
       ],
@@ -88,8 +106,10 @@ describe('mdast-process-images Tests', () => {
     assert.strictEqual(externalAssetNode.url, 'https://example.com/adobe/assets/urn:aaid:aem:12345-abcde', 'External asset URL should remain unchanged');
 
     // Verify only the regular image was processed by mediaHandler
-    assert.strictEqual(processedUrls.length, 1, 'Only regular image should be processed');
-    assert.strictEqual(processedUrls[0], 'https://regular-image.com/image.jpg', 'Regular image should be processed');
+    assert.deepStrictEqual(processedUrls, [
+      'https://regular-image.com/image.jpg',
+      'https://example.com/image.jpg',
+    ]);
   });
 
   it('handles image load failures gracefully', async () => {
@@ -101,8 +121,13 @@ describe('mdast-process-images Tests', () => {
           children: [
             {
               type: 'image',
-              url: 'about:error',
+              url: 'https://error.com',
               alt: 'Bad Image',
+            },
+            {
+              type: 'image',
+              url: 'https://fail.com',
+              alt: 'fail image',
             },
           ],
         },
@@ -112,8 +137,53 @@ describe('mdast-process-images Tests', () => {
     await processImages(mockLog, tree, mockMediaHandler, baseUrl);
 
     // Verify the URL is set to about:error
-    const badImageNode = tree.children[0].children[0];
-    assert.strictEqual(badImageNode.url, 'about:error');
+    assert.strictEqual(tree.children[0].children[0].url, 'about:error');
+    assert.strictEqual(tree.children[0].children[1].url, 'about:error');
+  });
+
+  it('handles 1 large image', async () => {
+    const tree = {
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'image',
+              url: 'https://large.com/1',
+              alt: 'large image',
+            },
+          ],
+        },
+      ],
+    };
+
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new SizeTooLargeException('Image 1 exceeds allowed limit of 1.00MB'));
+  });
+
+  it('handles 2 large images', async () => {
+    const tree = {
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'image',
+              url: 'https://large.com/1',
+              alt: 'large image',
+            },
+            {
+              type: 'image',
+              url: 'https://large.com/2',
+              alt: 'another large image',
+            },
+          ],
+        },
+      ],
+    };
+
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new SizeTooLargeException('Images 1 and 2 exceed allowed limit of 1.00MB'));
   });
 
   it('skips processing external asset images without counting them toward limit', async () => {
