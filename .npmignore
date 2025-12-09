@@ -4,4 +4,6 @@ junit
 build
 logs
 test-results.xml
+eslint.config.js
+test/
 .*
