@@ -12,8 +12,9 @@
 
 /* eslint-env mocha */
 import assert from 'assert';
+import { toSISize } from '@adobe/helix-shared-string';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
-import { processImages, TooManyImagesError, toSISize } from '../src/mdast-process-images.js';
+import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';
 
 describe('Utils Test', () => {
   it('calculates the correct si size', () => {

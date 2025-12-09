@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/adobe/helix-html2md-lib.git"
+    "url": "git+https://github.com/adobe/helix-html2md-lib.git"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -38,6 +38,7 @@
     "@adobe/helix-markdown-support": "7.1.16",
     "@adobe/helix-mediahandler": "2.9.5",
     "@adobe/helix-shared-process-queue": "3.1.3",
+    "@adobe/helix-shared-string": "2.2.0",
     "@adobe/micromark-extension-gridtables": "2.0.4",
     "@adobe/remark-gridtables": "3.0.15",
     "hast-util-select": "6.0.4",
