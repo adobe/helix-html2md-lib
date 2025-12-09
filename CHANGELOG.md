@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/adobe/helix-html2md-lib/compare/v1.0.0...v1.1.0) (2025-12-09)
+
+
+### Features
+
+* export error ([ce938c8](https://github.com/adobe/helix-html2md-lib/commit/ce938c8b678e67bbdddf204c8d4c5d9b6f88f3a3))
+
 # 1.0.0 (2025-12-09)
 
 
