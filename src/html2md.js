@@ -91,7 +91,7 @@ function toGridTable(title, data) {
  */
 function assertValidJSON(str) {
   try {
-    return JSON.stringify(JSON.parse(str.trim()), null, 0);
+    return JSON.stringify(JSON.parse(str.trim()), null, 2);
   } catch {
     throw new ConstraintsError('invalid json-ld');
   }
@@ -129,7 +129,7 @@ function addMetadata(hast, mdast, maxMetadataSize) {
         }
       }
     } else if (child.tagName === 'script' && child.properties.type === 'application/ld+json') {
-      const str = assertMetaSizeLimit(assertValidJSON(toString(child)), maxMetadataSize);
+      const str = assertValidJSON(assertMetaSizeLimit(toString(child), maxMetadataSize));
       meta.set(text('json-ld'), text(str));
     }
   }
