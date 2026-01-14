@@ -91,7 +91,7 @@ function toGridTable(title, data) {
  */
 function assertValidJSON(str) {
   try {
-    return JSON.stringify(JSON.parse(str.trim()), null, 2);
+    return JSON.stringify(JSON.parse(str.trim()), null, 0);
   } catch {
     throw new ConstraintsError('invalid json-ld');
   }
