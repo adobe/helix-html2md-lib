@@ -110,26 +110,26 @@ function assertMetaSizeLimit(str, limit = 128_000) {
   return str;
 }
 
-function addMetadata(hast, mdast) {
+function addMetadata(hast, mdast, maxMetadataSize) {
   const meta = new Map();
 
   const head = select('head', hast);
   for (const child of head.children) {
     if (child.tagName === 'title') {
-      meta.set(text('title'), text(assertMetaSizeLimit(toString(child))));
+      meta.set(text('title'), text(assertMetaSizeLimit(toString(child), maxMetadataSize)));
     } else if (child.tagName === 'meta') {
       const { name, property, content } = child.properties;
       let key = name || property || '';
       key = key.includes(':') && !key.startsWith('twitter:') ? property : name;
       if (key && !HELIX_META[key]) {
         if (key === 'image' || key === 'twitter:image' || key === 'og:image' || key === 'og:image:secure_url') {
-          meta.set(text(key), image(assertMetaSizeLimit(content)));
+          meta.set(text(key), image(assertMetaSizeLimit(content, maxMetadataSize)));
         } else {
-          meta.set(text(key), text(assertMetaSizeLimit(content)));
+          meta.set(text(key), text(assertMetaSizeLimit(content, maxMetadataSize)));
         }
       }
     } else if (child.tagName === 'script' && child.properties.type === 'application/ld+json') {
-      const str = assertMetaSizeLimit(assertValidJSON(toString(child)));
+      const str = assertMetaSizeLimit(assertValidJSON(toString(child)), maxMetadataSize);
       meta.set(text('json-ld'), text(str));
     }
   }
@@ -324,6 +324,7 @@ function cleanupFormats(tree) {
  * @param {string[]} [opts.externalImageUrlPrefixes] - Optional array of allowed external image URL prefixes.
  * @param {number} [opts.maxImages] - Optional maximum number of images to process.
  * @param {boolean} [opts.unspreadLists] - Whether to unspread lists in the output markdown.
+ * @param {number} [opts.maxMetadataSize] - Optional maximum size of metadata fields.
  * @returns {Promise<string>} The resulting Markdown string.
  */
 export async function html2md(html, opts) {
@@ -354,7 +355,7 @@ export async function html2md(html, opts) {
   });
 
   cleanupFormats(mdast);
-  addMetadata(hast, mdast);
+  addMetadata(hast, mdast, opts.maxMetadataSize);
 
   await processImages(log, mdast, mediaHandler, url, opts.externalImageUrlPrefixes, opts.maxImages);
   imageReferences(mdast);
