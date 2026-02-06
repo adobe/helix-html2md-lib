@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/adobe/helix-html2md-lib/compare/v1.1.0...v1.1.1) (2026-02-06)
+
+
+### Bug Fixes
+
+* **deps:** unpin dependencies ([#2](https://github.com/adobe/helix-html2md-lib/issues/2)) ([b19b464](https://github.com/adobe/helix-html2md-lib/commit/b19b464f04365948f009ed3d4abe2e31cc3ed508))
+
 # [1.1.0](https://github.com/adobe/helix-html2md-lib/compare/v1.0.0...v1.1.0) (2025-12-09)
 
 
