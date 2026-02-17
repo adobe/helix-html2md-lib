@@ -15,6 +15,7 @@ import assert from 'assert';
 import { toSISize } from '@adobe/helix-shared-string';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
 import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';
+import { ValidationError } from '../src/validation-error.js';
 
 describe('Utils Test', () => {
   it('calculates the correct si size', () => {
@@ -159,7 +160,7 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new SizeTooLargeException('Image 1 exceeds allowed limit of 1.00MB'));
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new ValidationError('One or more images failed validation:\n[1] Image is too large'));
   });
 
   it('handles 2 large images', async () => {
@@ -183,8 +184,11 @@ describe('mdast-process-images Tests', () => {
         },
       ],
     };
-
-    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new SizeTooLargeException('Images 1 and 2 exceed allowed limit of 1.00MB'));
+    const msg = `One or more images failed validation:
+[1] Image is too large
+[2] Image is too large`;
+    // eslint-disable-next-line max-len
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new ValidationError(msg));
   });
 
   it('skips processing external asset images without counting them toward limit', async () => {

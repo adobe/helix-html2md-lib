@@ -12,7 +12,7 @@
 import { visit, CONTINUE } from 'unist-util-visit';
 import processQueue from '@adobe/helix-shared-process-queue';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
-import { toSISize } from '@adobe/helix-shared-string';
+import { ValidationError } from './validation-error.js';
 
 export class TooManyImagesError extends Error {
 }
@@ -93,9 +93,9 @@ export async function processImages(
       url = blob?.uri || 'about:error';
       /* c8 ignore next 9 */
     } catch (e) {
-      if (e instanceof SizeTooLargeException) {
-        // only report the first large image
-        errorImages.push(nodes[0].imageIdx);
+      // only report the first large image
+      if (e instanceof SizeTooLargeException || e instanceof ValidationError) {
+        errorImages.push({ idx: nodes[0].imageIdx, message: e.message });
       }
       // in case of invalid urls, or other errors
       log.warn(`Failed to fetch image for url '${url}': ${e.message}`);
@@ -108,14 +108,10 @@ export async function processImages(
   }, 8);
 
   if (errorImages.length > 0) {
-    let msg;
-    if (errorImages.length > 1) {
-      // eslint-disable-next-line no-underscore-dangle
-      msg = `Images ${errorImages.slice(0, -1).join(', ')} and ${errorImages.at(-1)} exceed allowed limit of ${toSISize(mediaHandler._maxSize)}`;
-    } else {
-      // eslint-disable-next-line no-underscore-dangle
-      msg = `Image ${errorImages[0]} exceeds allowed limit of ${toSISize(mediaHandler._maxSize)}`;
+    const msg = ['One or more images failed validation:'];
+    for (const { idx, message } of errorImages) {
+      msg.push(`[${idx}] ${message}`);
     }
-    throw new SizeTooLargeException(msg);
+    throw new ValidationError(msg.join('\n'));
   }
 }
