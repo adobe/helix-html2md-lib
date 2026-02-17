@@ -54,6 +54,9 @@ describe('mdast-process-images Tests', () => {
       if (url.startsWith('https://large.com/')) {
         throw new SizeTooLargeException('Image is too large');
       }
+      if (url.startsWith('https://invalid.com/')) {
+        throw new ValidationError('Image is not valid');
+      }
       return { uri: url };
     },
   };
@@ -163,7 +166,7 @@ describe('mdast-process-images Tests', () => {
     await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new ValidationError('One or more images failed validation:\n[1] Image is too large'));
   });
 
-  it('handles 2 large images', async () => {
+  it('handles large and invalid images', async () => {
     const tree = {
       type: 'root',
       children: [
@@ -177,8 +180,8 @@ describe('mdast-process-images Tests', () => {
             },
             {
               type: 'image',
-              url: 'https://large.com/2',
-              alt: 'another large image',
+              url: 'https://invalid.com/2',
+              alt: 'an invalid image',
             },
           ],
         },
@@ -186,7 +189,7 @@ describe('mdast-process-images Tests', () => {
     };
     const msg = `One or more images failed validation:
 [1] Image is too large
-[2] Image is too large`;
+[2] Image is not valid`;
     // eslint-disable-next-line max-len
     await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new ValidationError(msg));
   });
