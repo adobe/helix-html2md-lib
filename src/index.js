@@ -11,4 +11,4 @@
  */
 export * from './html2md.js';
 export { TooManyImagesError } from './mdast-process-images.js';
-export { ValidationError } from './validation-error.js';
+export { ImageUploadError } from './image-upload-error.js';
