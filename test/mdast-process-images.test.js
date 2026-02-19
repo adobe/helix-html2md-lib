@@ -12,25 +12,13 @@
 
 /* eslint-env mocha */
 import assert from 'assert';
-import { toSISize } from '@adobe/helix-shared-string';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
 import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';
+import { ImageUploadError } from '../src/image-upload-error.js';
 
-describe('Utils Test', () => {
-  it('calculates the correct si size', () => {
-    assert.strictEqual(toSISize(0), '0B');
-    assert.strictEqual(toSISize(100), '100B');
-    assert.strictEqual(toSISize(-100), '-100B');
-    assert.strictEqual(toSISize(1024), '1.00KB');
-    assert.strictEqual(toSISize(1024 + 512), '1.50KB');
-    assert.strictEqual(toSISize(-1024 - 512), '-1.50KB');
-    assert.strictEqual(toSISize(1024 * 1024), '1.00MB');
-    assert.strictEqual(toSISize(1024 * 1024, 0), '1MB');
-    assert.strictEqual(toSISize(1024 * 1024 * 1024), '1.00GB');
-    assert.strictEqual(toSISize(2048 * 1024 * 1024 * 1024), '2.00TB');
-    assert.strictEqual(toSISize(-2048 * 1024 * 1024 * 1024), '-2.00TB');
-  });
-});
+class ValidationError extends Error {
+  fatal = true;
+}
 
 describe('mdast-process-images Tests', () => {
   let processedUrls;
@@ -41,7 +29,6 @@ describe('mdast-process-images Tests', () => {
   };
 
   const mockMediaHandler = {
-    _maxSize: 1024 * 1024,
     getBlob: async (url) => {
       processedUrls.push(url);
       if (url === 'https://error.com') {
@@ -51,7 +38,10 @@ describe('mdast-process-images Tests', () => {
         return null;
       }
       if (url.startsWith('https://large.com/')) {
-        throw new SizeTooLargeException('Image is too large');
+        throw new SizeTooLargeException('Image is too large', 200, 100);
+      }
+      if (url.startsWith('https://invalid.com/')) {
+        throw new ValidationError('Image is not valid');
       }
       return { uri: url };
     },
@@ -159,10 +149,15 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new SizeTooLargeException('Image 1 exceeds allowed limit of 1.00MB'));
+    const error = new ImageUploadError('One or more images failed uploading.', [{
+      idx: 1,
+      error: new SizeTooLargeException('Image is too large', 200, 100),
+      url: 'https://large.com/1',
+    }]);
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), error);
   });
 
-  it('handles 2 large images', async () => {
+  it('handles large and invalid images', async () => {
     const tree = {
       type: 'root',
       children: [
@@ -176,15 +171,24 @@ describe('mdast-process-images Tests', () => {
             },
             {
               type: 'image',
-              url: 'https://large.com/2',
-              alt: 'another large image',
+              url: 'https://invalid.com/2',
+              alt: 'an invalid image',
             },
           ],
         },
       ],
     };
-
-    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new SizeTooLargeException('Images 1 and 2 exceed allowed limit of 1.00MB'));
+    const error = new ImageUploadError('One or more images failed uploading.', [{
+      idx: 1,
+      error: new SizeTooLargeException('Image is too large', 200, 100),
+      url: 'https://large.com/1',
+    }, {
+      idx: 2,
+      error: new ValidationError('Image is not valid'),
+      url: 'https://invalid.com/2',
+    }]);
+    // eslint-disable-next-line max-len
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), error);
   });
 
   it('skips processing external asset images without counting them toward limit', async () => {

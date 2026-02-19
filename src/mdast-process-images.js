@@ -12,7 +12,7 @@
 import { visit, CONTINUE } from 'unist-util-visit';
 import processQueue from '@adobe/helix-shared-process-queue';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
-import { toSISize } from '@adobe/helix-shared-string';
+import { ImageUploadError } from './image-upload-error.js';
 
 export class TooManyImagesError extends Error {
 }
@@ -24,6 +24,7 @@ export class TooManyImagesError extends Error {
  * @param {MediaHandler} mediaHandler
  * @param {string} baseUrl
  * @param {Array<string>} externalImageUrlPrefixes Array of url prefixes to detect external images
+ * @param maxImages
  */
 export async function processImages(
   log,
@@ -93,9 +94,14 @@ export async function processImages(
       url = blob?.uri || 'about:error';
       /* c8 ignore next 9 */
     } catch (e) {
-      if (e instanceof SizeTooLargeException) {
-        // only report the first large image
-        errorImages.push(nodes[0].imageIdx);
+      // only report the first large image
+      const errorNode = nodes[0];
+      if (e instanceof SizeTooLargeException || e.fatal) {
+        errorImages.push({
+          idx: errorNode.imageIdx,
+          url: errorNode.url,
+          error: e,
+        });
       }
       // in case of invalid urls, or other errors
       log.warn(`Failed to fetch image for url '${url}': ${e.message}`);
@@ -108,14 +114,6 @@ export async function processImages(
   }, 8);
 
   if (errorImages.length > 0) {
-    let msg;
-    if (errorImages.length > 1) {
-      // eslint-disable-next-line no-underscore-dangle
-      msg = `Images ${errorImages.slice(0, -1).join(', ')} and ${errorImages.at(-1)} exceed allowed limit of ${toSISize(mediaHandler._maxSize)}`;
-    } else {
-      // eslint-disable-next-line no-underscore-dangle
-      msg = `Image ${errorImages[0]} exceeds allowed limit of ${toSISize(mediaHandler._maxSize)}`;
-    }
-    throw new SizeTooLargeException(msg);
+    throw new ImageUploadError('One or more images failed uploading.', errorImages);
   }
 }
