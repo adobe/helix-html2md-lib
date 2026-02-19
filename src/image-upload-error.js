@@ -9,8 +9,16 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
 /**
-  * Custom error class for validation errors.
+  * Custom error class for image upload errors.
   * @extends Error
   */
-export class ValidationError extends Error {}
+export class ImageUploadError extends Error {
+  errors = [];
+
+  constructor(message, errors = []) {
+    super(message);
+    this.errors = errors;
+  }
+}

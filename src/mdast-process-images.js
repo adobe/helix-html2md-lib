@@ -12,7 +12,7 @@
 import { visit, CONTINUE } from 'unist-util-visit';
 import processQueue from '@adobe/helix-shared-process-queue';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
-import { ValidationError } from './validation-error.js';
+import { ImageUploadError } from './image-upload-error.js';
 
 export class TooManyImagesError extends Error {
 }
@@ -24,6 +24,7 @@ export class TooManyImagesError extends Error {
  * @param {MediaHandler} mediaHandler
  * @param {string} baseUrl
  * @param {Array<string>} externalImageUrlPrefixes Array of url prefixes to detect external images
+ * @param maxImages
  */
 export async function processImages(
   log,
@@ -94,8 +95,13 @@ export async function processImages(
       /* c8 ignore next 9 */
     } catch (e) {
       // only report the first large image
-      if (e instanceof SizeTooLargeException || e instanceof ValidationError) {
-        errorImages.push({ idx: nodes[0].imageIdx, message: e.message });
+      const errorNode = nodes[0];
+      if (e instanceof SizeTooLargeException || e.fatal) {
+        errorImages.push({
+          idx: errorNode.imageIdx,
+          url: errorNode.url,
+          error: e,
+        });
       }
       // in case of invalid urls, or other errors
       log.warn(`Failed to fetch image for url '${url}': ${e.message}`);
@@ -108,10 +114,6 @@ export async function processImages(
   }, 8);
 
   if (errorImages.length > 0) {
-    const msg = ['One or more images failed validation:'];
-    for (const { idx, message } of errorImages) {
-      msg.push(`[${idx}] ${message}`);
-    }
-    throw new ValidationError(msg.join('\n'));
+    throw new ImageUploadError('One or more images failed uploading.', errorImages);
   }
 }

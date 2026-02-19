@@ -15,7 +15,7 @@ import assert from 'assert';
 import { toSISize } from '@adobe/helix-shared-string';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
 import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';
-import { ValidationError } from '../src/validation-error.js';
+import { ImageUploadError } from '../src/image-upload-error.js';
 
 describe('Utils Test', () => {
   it('calculates the correct si size', () => {
@@ -33,6 +33,10 @@ describe('Utils Test', () => {
   });
 });
 
+class ValidationError extends Error {
+  fatal = true;
+}
+
 describe('mdast-process-images Tests', () => {
   let processedUrls;
 
@@ -42,7 +46,6 @@ describe('mdast-process-images Tests', () => {
   };
 
   const mockMediaHandler = {
-    _maxSize: 1024 * 1024,
     getBlob: async (url) => {
       processedUrls.push(url);
       if (url === 'https://error.com') {
@@ -52,7 +55,7 @@ describe('mdast-process-images Tests', () => {
         return null;
       }
       if (url.startsWith('https://large.com/')) {
-        throw new SizeTooLargeException('Image is too large');
+        throw new SizeTooLargeException('Image is too large', 200, 100);
       }
       if (url.startsWith('https://invalid.com/')) {
         throw new ValidationError('Image is not valid');
@@ -163,7 +166,12 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new ValidationError('One or more images failed validation:\n[1] Image is too large'));
+    const error = new ImageUploadError('One or more images failed uploading.', [{
+      idx: 1,
+      error: new SizeTooLargeException('Image is too large', 200, 100),
+      url: 'https://large.com/1',
+    }]);
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), error);
   });
 
   it('handles large and invalid images', async () => {
@@ -187,11 +195,17 @@ describe('mdast-process-images Tests', () => {
         },
       ],
     };
-    const msg = `One or more images failed validation:
-[1] Image is too large
-[2] Image is not valid`;
+    const error = new ImageUploadError('One or more images failed uploading.', [{
+      idx: 1,
+      error: new SizeTooLargeException('Image is too large', 200, 100),
+      url: 'https://large.com/1',
+    }, {
+      idx: 2,
+      error: new ValidationError('Image is not valid'),
+      url: 'https://invalid.com/2',
+    }]);
     // eslint-disable-next-line max-len
-    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), new ValidationError(msg));
+    await assert.rejects(processImages(mockLog, tree, mockMediaHandler, baseUrl), error);
   });
 
   it('skips processing external asset images without counting them toward limit', async () => {
