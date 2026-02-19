@@ -12,26 +12,9 @@
 
 /* eslint-env mocha */
 import assert from 'assert';
-import { toSISize } from '@adobe/helix-shared-string';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
 import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';
 import { ImageUploadError } from '../src/image-upload-error.js';
-
-describe('Utils Test', () => {
-  it('calculates the correct si size', () => {
-    assert.strictEqual(toSISize(0), '0B');
-    assert.strictEqual(toSISize(100), '100B');
-    assert.strictEqual(toSISize(-100), '-100B');
-    assert.strictEqual(toSISize(1024), '1.00KB');
-    assert.strictEqual(toSISize(1024 + 512), '1.50KB');
-    assert.strictEqual(toSISize(-1024 - 512), '-1.50KB');
-    assert.strictEqual(toSISize(1024 * 1024), '1.00MB');
-    assert.strictEqual(toSISize(1024 * 1024, 0), '1MB');
-    assert.strictEqual(toSISize(1024 * 1024 * 1024), '1.00GB');
-    assert.strictEqual(toSISize(2048 * 1024 * 1024 * 1024), '2.00TB');
-    assert.strictEqual(toSISize(-2048 * 1024 * 1024 * 1024), '-2.00TB');
-  });
-});
 
 class ValidationError extends Error {
   fatal = true;
