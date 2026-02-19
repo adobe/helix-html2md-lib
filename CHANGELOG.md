@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/adobe/helix-html2md-lib/compare/v1.1.1...v2.0.0) (2026-02-19)
+
+
+### Features
+
+* throw generic ImageUploadError ([75d22d4](https://github.com/adobe/helix-html2md-lib/commit/75d22d4da3fe71a009617664bef8a5775698ebb4))
+
+
+### BREAKING CHANGES
+
+* throws ImageUploadError instead of SizeTooLargeException
+
 ## [1.1.1](https://github.com/adobe/helix-html2md-lib/compare/v1.1.0...v1.1.1) (2026-02-06)
 
 
