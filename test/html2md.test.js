@@ -17,11 +17,12 @@ import { resolve } from 'path';
 import { classNameToBlockType, html2md } from '../src/html2md.js';
 import { Nock } from './utils.js';
 
-async function test(spec) {
+async function test(spec, opts = {}) {
   const html = await readFile(resolve(__testdir, 'fixtures', `${spec}.html`), 'utf-8');
   const actual = await html2md(html, {
     log: console,
     url: spec,
+    ...opts,
   });
   const expected = await readFile(resolve(__testdir, 'fixtures', `${spec}.md`), 'utf-8');
   assert.strictEqual(actual.trim(), expected.trim());
@@ -99,6 +100,10 @@ describe('html2md Tests', () => {
 
   it('convert a document with json-ld script tags correctly', async () => {
     await test('json-ld');
+  });
+
+  it('convert a document with a large json-ld script tags correctly', async () => {
+    await test('json-ld-too-large', { maxMetadataSize: 256_000 });
   });
 
   it('throws meaningful error when json-ld is invalid', async () => {
