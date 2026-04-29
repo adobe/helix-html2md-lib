@@ -77,4 +77,8 @@ describe('Roundtrip tests', () => {
   it('converts \'tables\' HTML input to expected output', async () => {
     await test('tables');
   });
+
+  it('converts \'empty-paragraphs-and-line-breaks\' HTML input to the expected output', async () => {
+    await test('empty-paragraphs-and-line-breaks');
+  });
 });
