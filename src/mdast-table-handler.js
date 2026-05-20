@@ -39,6 +39,9 @@ function toGridCell(cell, state) {
 }
 
 function toGridRow(row, state) {
+  if (!row.children) {
+    return null;
+  }
   return {
     ...row,
     children: row.children.map((cell) => toGridCell(cell, state)),
@@ -47,7 +50,9 @@ function toGridRow(row, state) {
 }
 
 function toGridRows(rows, state) {
-  return rows.map((r) => toGridRow(r, state));
+  return rows
+    .map((r) => toGridRow(r, state))
+    .filter(Boolean);
 }
 
 const tableToGridTable = (table, state) => {
