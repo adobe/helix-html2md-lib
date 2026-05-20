@@ -50,13 +50,13 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@adobe/eslint-config-helix": "3.0.23",
-    "@adobe/fetch": "4.2.3",
+    "@adobe/eslint-config-helix": "3.0.27",
+    "@adobe/fetch": "4.3.0",
     "@adobe/helix-deploy": "14.0.6",
     "@adobe/helix-html-pipeline": "^6.0.0",
-    "@adobe/helix-universal": "5.4.0",
-    "@adobe/helix-universal-devserver": "1.1.146",
-    "@adobe/semantic-release-coralogix": "1.1.40",
+    "@adobe/helix-universal": "5.4.1",
+    "@adobe/helix-universal-devserver": "1.1.147",
+    "@adobe/semantic-release-coralogix": "1.1.41",
     "@eslint/config-helpers": "0.5.5",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "7.1.0",
