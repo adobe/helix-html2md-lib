@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-html2md",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Helix html2md library",
   "type": "module",
   "scripts": {

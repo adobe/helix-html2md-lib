@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/adobe/helix-html2md-lib/compare/v2.0.1...v2.1.0) (2026-05-20)
+
+
+### Features
+
+* improve metadata size constraints for json-ld ([#1](https://github.com/adobe/helix-html2md-lib/issues/1)) ([a35b28f](https://github.com/adobe/helix-html2md-lib/commit/a35b28fe03cb30b00fa134c0af7a1da7254db47c))
+
 ## [2.0.1](https://github.com/adobe/helix-html2md-lib/compare/v2.0.0...v2.0.1) (2026-05-20)
 
 
