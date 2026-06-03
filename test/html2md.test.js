@@ -130,6 +130,69 @@ describe('html2md Tests', () => {
     await test('external-assets');
   });
 
+  it('imageFilter option skips filtered images from mediaHandler', async () => {
+    const html = '<html><body><main><div>'
+      + '<img src="https://keep.com/image.jpg">'
+      + '<img src="https://skip.com/image.jpg">'
+      + '</div></main></body></html>';
+    const processedUrls = [];
+    const mediaHandler = {
+      getBlob: async (url) => {
+        processedUrls.push(url);
+        return { uri: url };
+      },
+    };
+    await html2md(html, {
+      log: console,
+      url: 'https://example.com',
+      mediaHandler,
+      imageFilter: (url) => !url.startsWith('https://skip.com/'),
+    });
+    assert.deepStrictEqual(processedUrls, ['https://keep.com/image.jpg']);
+  });
+
+  it('externalImageUrlPrefixes backward compat skips matched images (array)', async () => {
+    const html = '<html><body><main><div>'
+      + '<img src="https://keep.com/image.jpg">'
+      + '<img src="https://skip.com/image.jpg">'
+      + '</div></main></body></html>';
+    const processedUrls = [];
+    const mediaHandler = {
+      getBlob: async (url) => {
+        processedUrls.push(url);
+        return { uri: url };
+      },
+    };
+    await html2md(html, {
+      log: console,
+      url: 'https://example.com',
+      mediaHandler,
+      externalImageUrlPrefixes: ['https://skip.com/'],
+    });
+    assert.deepStrictEqual(processedUrls, ['https://keep.com/image.jpg']);
+  });
+
+  it('externalImageUrlPrefixes backward compat skips matched images (string)', async () => {
+    const html = '<html><body><main><div>'
+      + '<img src="https://keep.com/image.jpg">'
+      + '<img src="https://skip.com/image.jpg">'
+      + '</div></main></body></html>';
+    const processedUrls = [];
+    const mediaHandler = {
+      getBlob: async (url) => {
+        processedUrls.push(url);
+        return { uri: url };
+      },
+    };
+    await html2md(html, {
+      log: console,
+      url: 'https://example.com',
+      mediaHandler,
+      externalImageUrlPrefixes: 'https://skip.com/',
+    });
+    assert.deepStrictEqual(processedUrls, ['https://keep.com/image.jpg']);
+  });
+
   it('convert nested tables', async () => {
     await test('tables');
   });
