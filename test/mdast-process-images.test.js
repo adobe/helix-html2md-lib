@@ -15,6 +15,7 @@ import assert from 'assert';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
 import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';
 import { ImageUploadError } from '../src/image-upload-error.js';
+import { imageFilterFromPrefixes } from '../src/html2md.js';
 
 class ValidationError extends Error {
   fatal = true;
@@ -90,7 +91,7 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, ['https://example.com/adobe/assets/urn:aaid:aem:']);
+    await processImages(mockLog, tree, mockMediaHandler, baseUrl, imageFilterFromPrefixes('https://example.com/adobe/assets/urn:aaid:aem:'));
 
     // Verify external asset node is not processed and URL is preserved
     const externalAssetNode = tree.children[0].children[0];
@@ -225,7 +226,8 @@ describe('mdast-process-images Tests', () => {
       children,
     };
 
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, ['https://example.com/adobe/assets/urn:aaid:aem:']);
+    const aemFilter = imageFilterFromPrefixes('https://example.com/adobe/assets/urn:aaid:aem:');
+    await processImages(mockLog, tree, mockMediaHandler, baseUrl, aemFilter);
 
     // Verify only regular images were processed
     assert.strictEqual(processedUrls.length, 50, 'Only regular images should be processed');
@@ -256,7 +258,7 @@ describe('mdast-process-images Tests', () => {
     };
 
     // This should not throw with exactly 200 regular images
-    await processImages(mockLog, treeLimitRegular, mockMediaHandler, baseUrl, ['https://example.com/adobe/assets/urn:aaid:aem:']);
+    await processImages(mockLog, treeLimitRegular, mockMediaHandler, baseUrl, aemFilter);
 
     // But if we add external images + 200 regular images, it should also not throw
     const mixedTreeWithinLimit = {
@@ -265,7 +267,7 @@ describe('mdast-process-images Tests', () => {
     };
 
     // This should not throw because external images don't count toward the limit
-    await processImages(mockLog, mixedTreeWithinLimit, mockMediaHandler, baseUrl, ['https://example.com/adobe/assets/urn:aaid:aem:']);
+    await processImages(mockLog, mixedTreeWithinLimit, mockMediaHandler, baseUrl, aemFilter);
 
     // And if we add one more regular image beyond 200, it should throw
     const treeOverLimit = {
@@ -287,7 +289,7 @@ describe('mdast-process-images Tests', () => {
 
     // This should throw an error because we now have 201 regular images
     await assert.rejects(
-      async () => processImages(mockLog, treeOverLimit, mockMediaHandler, baseUrl, ['https://example.com/adobe/assets/urn:aaid:aem:']),
+      async () => processImages(mockLog, treeOverLimit, mockMediaHandler, baseUrl, aemFilter),
       (err) => {
         assert.ok(err instanceof TooManyImagesError);
         assert.ok(err.message.includes('maximum number of images reached'));
@@ -333,10 +335,7 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, [
-      'https://example.com/adobe/assets/urn:aaid:aem:',
-      'https://example.com/adobe/dam/',
-    ]);
+    await processImages(mockLog, tree, mockMediaHandler, baseUrl, imageFilterFromPrefixes(['https://example.com/adobe/assets/urn:aaid:aem:', 'https://example.com/adobe/dam/']));
 
     // Verify all external images URLs remain unchanged
     const aemNode = tree.children[0].children[0];
@@ -351,7 +350,7 @@ describe('mdast-process-images Tests', () => {
     assert.strictEqual(processedUrls[0], 'https://regular-image.com/image.jpg');
   });
 
-  it('processes all images when no external patterns are provided', async () => {
+  it('processes all images when imageFilter returns true for all', async () => {
     // Create a tree with different types of images
     const tree = {
       type: 'root',
@@ -399,8 +398,8 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    // Call processImages with no external patterns (empty array)
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, []);
+    // Call processImages with no filter (process all)
+    await processImages(mockLog, tree, mockMediaHandler, baseUrl, () => true);
 
     // Verify no images are marked as external
     for (let i = 0; i < tree.children.length; i += 1) {
@@ -420,19 +419,6 @@ describe('mdast-process-images Tests', () => {
       ],
       'All image URLs should be processed',
     );
-
-    // Call processImages with undefined external patterns
-    processedUrls = [];
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl);
-
-    // Verify no images are marked as external
-    for (let i = 0; i < tree.children.length; i += 1) {
-      const node = tree.children[i].children[0];
-      assert.ok(!node.data || !node.data.externalImage, `Image ${i} should not be marked as external with undefined patterns`);
-    }
-
-    // Verify all images are processed
-    assert.strictEqual(processedUrls.length, 4, 'All 4 images should be processed with undefined patterns');
   });
 
   it('handles scene7 external asset URL patterns', async () => {
@@ -472,7 +458,7 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, ['https://example.com/is/image/', 'https://example.com/is/content/']);
+    await processImages(mockLog, tree, mockMediaHandler, baseUrl, imageFilterFromPrefixes(['https://example.com/is/image/', 'https://example.com/is/content/']));
 
     // Verify external asset nodes are not processed and URLs are preserved
     const imageNode = tree.children[0].children[0];
@@ -486,7 +472,7 @@ describe('mdast-process-images Tests', () => {
     assert.strictEqual(processedUrls[0], 'https://regular-image.com/image.jpg', 'Regular image should be processed');
   });
 
-  it('handles non-array externalImageUrlPrefixes by converting it to an array', async () => {
+  it('imageFilter function filters images by custom predicate', async () => {
     const tree = {
       type: 'root',
       children: [
@@ -513,46 +499,24 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    // Pass a string instead of an array for externalImageUrlPrefixes
-    const stringPrefix = 'https://example.com/adobe/assets/urn:aaid:aem:';
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, stringPrefix);
+    await processImages(
+      mockLog,
+      tree,
+      mockMediaHandler,
+      baseUrl,
+      (url) => !url.includes('/adobe/assets/'),
+    );
 
-    // Verify the external asset node is not processed and URL is preserved
-    const externalAssetNode = tree.children[0].children[0];
-    assert.strictEqual(externalAssetNode.url, 'https://example.com/adobe/assets/urn:aaid:aem:12345', 'External asset URL should remain unchanged when prefix is a string');
+    // Verify the filtered image is not processed and URL is preserved
+    const filteredNode = tree.children[0].children[0];
+    assert.strictEqual(filteredNode.url, 'https://example.com/adobe/assets/urn:aaid:aem:12345', 'Filtered image URL should remain unchanged');
 
     // Verify only the regular image was processed
     assert.strictEqual(processedUrls.length, 1, 'Only regular image should be processed');
-    assert.strictEqual(processedUrls[0], 'https://regular-image.com/image.jpg', 'Regular image should be processed');
+    assert.strictEqual(processedUrls[0], 'https://regular-image.com/image.jpg');
   });
 
-  it('handles empty string in externalImageUrlPrefixes without errors', async () => {
-    const tree = {
-      type: 'root',
-      children: [
-        {
-          type: 'paragraph',
-          children: [
-            {
-              type: 'image',
-              url: 'https://example.com/adobe/assets/urn:aaid:aem:12345',
-              alt: 'External Asset',
-            },
-          ],
-        },
-      ],
-    };
-
-    // Pass an empty string for externalImageUrlPrefixes
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, '');
-
-    // An empty string will be converted to an array with an empty string
-    // Images with URLs that start with an empty string (all URLs do) will be considered external
-    // So no images should be processed
-    assert.strictEqual(processedUrls.length, 0, 'No images should be processed with empty string prefix');
-  });
-
-  it('handles null or undefined externalImageUrlPrefixes correctly', async () => {
+  it('processes all images when no imageFilter is provided', async () => {
     const tree = {
       type: 'root',
       children: [
@@ -579,26 +543,10 @@ describe('mdast-process-images Tests', () => {
       ],
     };
 
-    // Reset processedUrls
-    processedUrls = [];
-
-    // Pass null for externalImageUrlPrefixes
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, null);
-
-    // All images should be processed when null is passed
-    assert.strictEqual(processedUrls.length, 2, 'All images should be processed with null prefix');
-    assert.ok(processedUrls.includes('https://example.com/image1.jpg'), 'First image should be processed');
-    assert.ok(processedUrls.includes('https://example.com/image2.jpg'), 'Second image should be processed');
-
-    // Reset processedUrls for undefined test
-    processedUrls = [];
-
-    // Pass undefined for externalImageUrlPrefixes (by not passing the parameter)
     await processImages(mockLog, tree, mockMediaHandler, baseUrl);
 
-    // All images should be processed when undefined is passed
-    assert.strictEqual(processedUrls.length, 2, 'All images should be processed with undefined prefix');
-    assert.ok(processedUrls.includes('https://example.com/image1.jpg'), 'First image should be processed');
-    assert.ok(processedUrls.includes('https://example.com/image2.jpg'), 'Second image should be processed');
+    assert.strictEqual(processedUrls.length, 2, 'All images should be processed when no filter is provided');
+    assert.ok(processedUrls.includes('https://example.com/image1.jpg'));
+    assert.ok(processedUrls.includes('https://example.com/image2.jpg'));
   });
 });

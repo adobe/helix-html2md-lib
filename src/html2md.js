@@ -313,6 +313,17 @@ function cleanupFormats(tree) {
 }
 
 /**
+ * Creates an imageFilter function from a URL prefix or array of prefixes.
+ * Images whose URL starts with any of the given prefixes will be skipped (filter returns false).
+ * @param {string|string[]} prefixes
+ * @returns {function(string):boolean}
+ */
+export function imageFilterFromPrefixes(prefixes) {
+  const list = Array.isArray(prefixes) ? prefixes : [prefixes];
+  return (url) => !list.some((p) => url.startsWith(p));
+}
+
+/**
  * Converts HTML content into Markdown.
  *
  * @async
@@ -321,7 +332,8 @@ function cleanupFormats(tree) {
  * @param {Logger} opts.log - Logger instance for logging messages.
  * @param {string} opts.url - The source URL of the HTML (used for logging).
  * @param {Object} [opts.mediaHandler] - Optional media handler for processing images.
- * @param {string[]} [opts.externalImageUrlPrefixes] - Optional array of allowed external image URL prefixes.
+ * @param {function(string):boolean} [opts.imageFilter] - Optional function to determine whether an image should be processed. Receives the image URL and returns true to process, false to skip. Takes precedence over externalImageUrlPrefixes.
+ * @param {string|string[]} [opts.externalImageUrlPrefixes] - Optional URL prefix or array of prefixes; images matching any prefix are skipped. Superseded by imageFilter.
  * @param {number} [opts.maxImages] - Optional maximum number of images to process.
  * @param {boolean} [opts.unspreadLists] - Whether to unspread lists in the output markdown.
  * @param {number} [opts.maxMetadataSize] - Optional maximum size of metadata fields.
@@ -357,7 +369,11 @@ export async function html2md(html, opts) {
   cleanupFormats(mdast);
   addMetadata(hast, mdast, opts.maxMetadataSize);
 
-  await processImages(log, mdast, mediaHandler, url, opts.externalImageUrlPrefixes, opts.maxImages);
+  let { imageFilter } = opts;
+  if (!imageFilter && opts.externalImageUrlPrefixes) {
+    imageFilter = imageFilterFromPrefixes(opts.externalImageUrlPrefixes);
+  }
+  await processImages(log, mdast, mediaHandler, url, imageFilter, opts.maxImages);
   imageReferences(mdast);
   sanitizeHeading(mdast);
   sanitizeTextAndFormats(mdast);
