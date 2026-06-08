@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/adobe/helix-html2md-lib/compare/v2.2.0...v2.2.1) (2026-06-08)
+
+
+### Bug Fixes
+
+* skip empty jsonld ([#38](https://github.com/adobe/helix-html2md-lib/issues/38)) ([6a66ae8](https://github.com/adobe/helix-html2md-lib/commit/6a66ae8850aa913e3f908ec621d6a201ac8f8e7e))
+
 # [2.2.0](https://github.com/adobe/helix-html2md-lib/compare/v2.1.0...v2.2.0) (2026-06-03)
 
 
