@@ -129,8 +129,11 @@ function addMetadata(hast, mdast, maxMetadataSize) {
         }
       }
     } else if (child.tagName === 'script' && child.properties.type === 'application/ld+json') {
-      const str = assertValidJSON(assertMetaSizeLimit(toString(child), maxMetadataSize));
-      meta.set(text('json-ld'), text(str));
+      const raw = toString(child).trim();
+      if (raw) {
+        const str = assertValidJSON(assertMetaSizeLimit(raw, maxMetadataSize));
+        meta.set(text('json-ld'), text(str));
+      }
     }
   }
 
