@@ -106,6 +106,10 @@ describe('html2md Tests', () => {
     await test('json-ld-too-large', { maxMetadataSize: 256_000 });
   });
 
+  it('ignores empty json-ld script tags', async () => {
+    await test('json-ld-empty');
+  });
+
   it('throws meaningful error when json-ld is invalid', async () => {
     await assert.rejects(() => test('json-ld-invalid'), Error('invalid json-ld'));
   });
