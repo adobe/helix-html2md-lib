@@ -1,3 +1,11 @@
+## [2.2.2](https://github.com/adobe/helix-html2md-lib/compare/v2.2.1...v2.2.2) (2026-06-30)
+
+
+### Bug Fixes
+
+* accept http:// and case-insensitive URL schemes for external images ([#47](https://github.com/adobe/helix-html2md-lib/issues/47)) ([fcf7e6a](https://github.com/adobe/helix-html2md-lib/commit/fcf7e6a8e0f46dc63045a26faa15584a533edaf4))
+* release ([87472f8](https://github.com/adobe/helix-html2md-lib/commit/87472f84b509b6f23e13a9c4ac6e40c9a4f96ef3))
+
 ## [2.2.1](https://github.com/adobe/helix-html2md-lib/compare/v2.2.0...v2.2.1) (2026-06-08)
 
 
