@@ -74,7 +74,7 @@ export async function processImages(
         // eslint-disable-next-line no-param-reassign
         node.url = new URL(url, baseUrl).href;
         register(node);
-      } else if (url.startsWith('https://')) {
+      } else if (/^https?:\/\//i.test(url)) {
         register(node);
       }
     }

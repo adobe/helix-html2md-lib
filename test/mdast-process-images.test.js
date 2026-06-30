@@ -601,4 +601,50 @@ describe('mdast-process-images Tests', () => {
     assert.ok(processedUrls.includes('https://example.com/image1.jpg'), 'First image should be processed');
     assert.ok(processedUrls.includes('https://example.com/image2.jpg'), 'Second image should be processed');
   });
+
+  it('registers http:// and case-insensitive scheme URLs', async () => {
+    const tree = {
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'image',
+              url: 'http://example.com/image.jpg',
+              alt: 'http image',
+            },
+          ],
+        },
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'image',
+              url: 'HTTP://example.com/image2.jpg',
+              alt: 'uppercase HTTP image',
+            },
+          ],
+        },
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'image',
+              url: 'HTTPS://example.com/image3.jpg',
+              alt: 'uppercase HTTPS image',
+            },
+          ],
+        },
+      ],
+    };
+
+    processedUrls = [];
+    await processImages(mockLog, tree, mockMediaHandler, baseUrl, []);
+
+    assert.strictEqual(processedUrls.length, 3, 'all three images should be registered');
+    assert.ok(processedUrls.includes('http://example.com/image.jpg'), 'http:// image should be processed');
+    assert.ok(processedUrls.includes('HTTP://example.com/image2.jpg'), 'HTTP:// image should be processed');
+    assert.ok(processedUrls.includes('HTTPS://example.com/image3.jpg'), 'HTTPS:// image should be processed');
+  });
 });
