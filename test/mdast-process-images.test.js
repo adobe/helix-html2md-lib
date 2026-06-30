@@ -588,7 +588,7 @@ describe('mdast-process-images Tests', () => {
     };
 
     processedUrls = [];
-    await processImages(mockLog, tree, mockMediaHandler, baseUrl, []);
+    await processImages(mockLog, tree, mockMediaHandler, baseUrl);
 
     assert.strictEqual(processedUrls.length, 3, 'all three images should be registered');
     assert.ok(processedUrls.includes('http://example.com/image.jpg'), 'http:// image should be processed');
