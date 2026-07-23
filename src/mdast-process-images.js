@@ -19,9 +19,12 @@ export class TooManyImagesError extends Error {
 
 /**
  * URL patterns for Adobe Assets / Dynamic Media delivery endpoints. Images served from
- * these URLs are already on Adobe's own optimized asset delivery CDN, so they're kept
- * as external references instead of being downloaded and rehosted into the site's own
- * media store - regardless of imageFilter/externalImageUrlPrefixes configuration.
+ * these URLs are already on Adobe's own optimized asset delivery CDN, so - when used as
+ * page-metadata images (og:image, twitter:image, etc.) - they're kept as external
+ * references instead of being downloaded and rehosted into the site's own media store,
+ * regardless of imageFilter/externalImageUrlPrefixes configuration. Regular body images
+ * are unaffected and keep today's exact rehosting behavior; see the isMetadataImage
+ * check in processImages/register below.
  * @constant {RegExp[]}
  */
 const ADOBE_ASSET_DELIVERY_PATTERNS = [
@@ -68,8 +71,10 @@ export async function processImages(
 
   const register = (node) => {
     const { url = '' } = node;
-    if (isAdobeAssetDeliveryUrl(url)) {
-      log.debug(`Skipping upload for Adobe Assets/Dynamic Media URL: ${url}`);
+    // only page-metadata images (og:image, twitter:image, etc.) get this exemption -
+    // regular body images are unaffected and keep today's exact rehosting behavior.
+    if (node.isMetadataImage && isAdobeAssetDeliveryUrl(url)) {
+      log.debug(`Skipping upload for Adobe Assets/Dynamic Media metadata URL: ${url}`);
       return;
     }
     if (!imageFilter(url)) {

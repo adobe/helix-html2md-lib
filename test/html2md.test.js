@@ -197,7 +197,9 @@ describe('html2md Tests', () => {
     assert.deepStrictEqual(processedUrls, ['https://keep.com/image.jpg']);
   });
 
-  it('preserves Adobe Assets/Dynamic Media delivery URLs by default, without any filter configured', async () => {
+  it('does NOT exempt Adobe Assets/Dynamic Media URLs used as regular body images', async () => {
+    // the exemption is scoped to page-metadata images only (see next test) - a body
+    // image using the same kind of URL keeps today's exact rehosting behavior.
     const html = '<html><body><main><div>'
       + '<img src="https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/foo.jpg">'
       + '<img src="https://s7ap1.scene7.com/is/image/mycompany/bar">'
@@ -211,14 +213,16 @@ describe('html2md Tests', () => {
       },
     };
     // deliberately no imageFilter / externalImageUrlPrefixes passed
-    const md = await html2md(html, {
+    await html2md(html, {
       log: console,
       url: 'https://example.com',
       mediaHandler,
     });
-    assert.deepStrictEqual(processedUrls, ['https://keep.com/image.jpg']);
-    assert.ok(md.includes('https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/foo.jpg'));
-    assert.ok(md.includes('https://s7ap1.scene7.com/is/image/mycompany/bar'));
+    assert.deepStrictEqual(processedUrls, [
+      'https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/foo.jpg',
+      'https://s7ap1.scene7.com/is/image/mycompany/bar',
+      'https://keep.com/image.jpg',
+    ]);
   });
 
   it('preserves an Adobe Assets/Dynamic Media URL used as og:image, without any filter configured', async () => {

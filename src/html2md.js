@@ -62,6 +62,10 @@ function image(url) {
   return {
     type: 'image',
     url,
+    // distinguishes a page-metadata image (og:image, twitter:image, etc.) from a
+    // regular body image node, so downstream processing (see isAdobeAssetDeliveryUrl
+    // in mdast-process-images.js) can treat them differently.
+    isMetadataImage: true,
   };
 }
 
