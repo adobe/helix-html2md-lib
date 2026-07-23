@@ -197,6 +197,55 @@ describe('html2md Tests', () => {
     assert.deepStrictEqual(processedUrls, ['https://keep.com/image.jpg']);
   });
 
+  it('does NOT exempt Adobe Assets/Dynamic Media URLs used as regular body images', async () => {
+    // the exemption is scoped to page-metadata images only (see next test) - a body
+    // image using the same kind of URL keeps today's exact rehosting behavior.
+    const html = '<html><body><main><div>'
+      + '<img src="https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/foo.jpg">'
+      + '<img src="https://s7ap1.scene7.com/is/image/mycompany/bar">'
+      + '<img src="https://keep.com/image.jpg">'
+      + '</div></main></body></html>';
+    const processedUrls = [];
+    const mediaHandler = {
+      getBlob: async (url) => {
+        processedUrls.push(url);
+        return { uri: url };
+      },
+    };
+    // deliberately no imageFilter / externalImageUrlPrefixes passed
+    await html2md(html, {
+      log: console,
+      url: 'https://example.com',
+      mediaHandler,
+    });
+    assert.deepStrictEqual(processedUrls, [
+      'https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/foo.jpg',
+      'https://s7ap1.scene7.com/is/image/mycompany/bar',
+      'https://keep.com/image.jpg',
+    ]);
+  });
+
+  it('preserves an Adobe Assets/Dynamic Media URL used as og:image, without any filter configured', async () => {
+    const html = '<html><head>'
+      + '<meta property="og:image" content="https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:67890/as/hero.jpg">'
+      + '</head><body><main><div><h1>Hello</h1></div></main></body></html>';
+    const processedUrls = [];
+    const mediaHandler = {
+      getBlob: async (url) => {
+        processedUrls.push(url);
+        return { uri: url };
+      },
+    };
+    // deliberately no imageFilter / externalImageUrlPrefixes passed
+    const md = await html2md(html, {
+      log: console,
+      url: 'https://example.com',
+      mediaHandler,
+    });
+    assert.deepStrictEqual(processedUrls, []);
+    assert.ok(md.includes('https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:67890/as/hero.jpg'));
+  });
+
   it('convert nested tables', async () => {
     await test('tables');
   });
