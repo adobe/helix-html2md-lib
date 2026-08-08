@@ -86,6 +86,20 @@ describe('html2md Tests', () => {
     await test('block-with-table');
   });
 
+  it('convert a document with images', async () => {
+    const processedUrls = [];
+    const mediaHandler = {
+      getBlob: async (url) => {
+        processedUrls.push(url);
+        return { uri: url };
+      },
+    };
+    await test('images', {
+      mediaHandler,
+      url: 'https://api.aem.live/org/sites/site/source/document.html',
+    });
+  });
+
   it('convert a document with underling, sub-, and superscript', async () => {
     await test('sub-sup-u');
   });
