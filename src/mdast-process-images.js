@@ -62,7 +62,7 @@ export async function processImages(
       // eslint-disable-next-line no-param-reassign
       node.imageIdx = imageIdx;
       imageIdx += 1;
-      if (url.indexOf(':') < 0 || url.startsWith('/')) {
+      if ((url.indexOf(':') < 0 || url.startsWith('/')) && !url.startsWith('./media_')) {
         // eslint-disable-next-line no-param-reassign
         node.url = new URL(url, baseUrl).href;
         register(node);
