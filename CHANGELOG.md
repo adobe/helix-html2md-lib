@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/adobe/helix-html2md-lib/compare/v2.2.2...v2.2.3) (2026-08-09)
+
+
+### Bug Fixes
+
+* keep ./media_ image references ([#61](https://github.com/adobe/helix-html2md-lib/issues/61)) ([ab4c3de](https://github.com/adobe/helix-html2md-lib/commit/ab4c3defbb41011d9eac5707c6a5f59157ca7a03))
+
 ## [2.2.2](https://github.com/adobe/helix-html2md-lib/compare/v2.2.1...v2.2.2) (2026-06-30)
 
 
