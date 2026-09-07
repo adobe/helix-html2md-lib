@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/adobe/helix-html2md-lib/compare/v2.2.3...v2.2.4) (2026-09-07)
+
+
+### Bug Fixes
+
+* allow 4.0.0 media handlers ([#72](https://github.com/adobe/helix-html2md-lib/issues/72)) ([39b3ef4](https://github.com/adobe/helix-html2md-lib/commit/39b3ef42529034875926e338daf0c818552608a8))
+
 ## [2.2.3](https://github.com/adobe/helix-html2md-lib/compare/v2.2.2...v2.2.3) (2026-08-09)
 
 
