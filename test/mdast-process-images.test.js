@@ -13,7 +13,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
-import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';
+import { processImages, TooManyImagesError, isAdobeAssetDeliveryUrl } from '../src/mdast-process-images.js';
 import { ImageUploadError } from '../src/image-upload-error.js';
 import { imageFilterFromPrefixes } from '../src/html2md.js';
 
@@ -594,5 +594,65 @@ describe('mdast-process-images Tests', () => {
     assert.ok(processedUrls.includes('http://example.com/image.jpg'), 'http:// image should be processed');
     assert.ok(processedUrls.includes('HTTP://example.com/image2.jpg'), 'HTTP:// image should be processed');
     assert.ok(processedUrls.includes('HTTPS://example.com/image3.jpg'), 'HTTPS:// image should be processed');
+  });
+
+  describe('isAdobeAssetDeliveryUrl', () => {
+    it('matches Dynamic Media OpenAPI / AEM Assets delivery URLs', () => {
+      assert.ok(isAdobeAssetDeliveryUrl('https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/foo.jpg'));
+    });
+
+    it('matches Scene7 / Dynamic Media classic URLs', () => {
+      assert.ok(isAdobeAssetDeliveryUrl('https://s7ap1.scene7.com/is/image/mycompany/bar'));
+    });
+
+    it('does not match unrelated or spoofed domains', () => {
+      assert.ok(!isAdobeAssetDeliveryUrl('https://example.com/adobe/assets/urn:aaid:aem:12345'));
+      assert.ok(!isAdobeAssetDeliveryUrl('https://evil-adobeaemcloud.com/adobe/assets/urn:aaid:aem:x'));
+      assert.ok(!isAdobeAssetDeliveryUrl('https://foo.adobeaemcloud.com.evil.com/adobe/assets/urn:aaid:aem:x'));
+    });
+  });
+
+  describe('page-metadata image exemption scoping', () => {
+    it('skips upload for a page-metadata image on a known Adobe Assets/Dynamic Media URL', async () => {
+      const tree = {
+        type: 'root',
+        children: [
+          {
+            type: 'image',
+            url: 'https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/hero.jpg',
+            isMetadataImage: true,
+          },
+        ],
+      };
+
+      await processImages(mockLog, tree, mockMediaHandler, baseUrl);
+
+      assert.strictEqual(processedUrls.length, 0, 'metadata image on a known Adobe Assets URL should not be uploaded');
+      assert.strictEqual(
+        tree.children[0].url,
+        'https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/hero.jpg',
+      );
+    });
+
+    it('still uploads a regular body image on the same kind of Adobe Assets/Dynamic Media URL', async () => {
+      const tree = {
+        type: 'root',
+        children: [
+          {
+            type: 'image',
+            url: 'https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/hero.jpg',
+            // no isMetadataImage flag - this is a regular body image
+          },
+        ],
+      };
+
+      await processImages(mockLog, tree, mockMediaHandler, baseUrl);
+
+      assert.deepStrictEqual(
+        processedUrls,
+        ['https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:12345/as/hero.jpg'],
+        'regular body image should still be uploaded even on a known Adobe Assets URL',
+      );
+    });
   });
 });
