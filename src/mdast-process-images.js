@@ -18,6 +18,35 @@ export class TooManyImagesError extends Error {
 }
 
 /**
+ * URL patterns for Adobe Assets / Dynamic Media delivery endpoints. Images served from
+ * these URLs are already on Adobe's own optimized asset delivery CDN, so - when used as
+ * page-metadata images (og:image, twitter:image, etc.) - they're kept as external
+ * references instead of being downloaded and rehosted into the site's own media store,
+ * regardless of imageFilter/externalImageUrlPrefixes configuration. Regular body images
+ * are unaffected and keep today's exact rehosting behavior; see the isMetadataImage
+ * check in processImages/register below.
+ * @constant {RegExp[]}
+ */
+const ADOBE_ASSET_DELIVERY_PATTERNS = [
+  // Dynamic Media with OpenAPI / AEM Assets delivery, e.g.
+  // https://delivery-p123-e456.adobeaemcloud.com/adobe/assets/urn:aaid:aem:.../as/foo.jpg
+  // Anchored on the adobeaemcloud.com domain (not just the path shape) so this can't
+  // accidentally match an unrelated host that merely has a similarly-shaped path.
+  /^https?:\/\/[^/]+\.adobeaemcloud\.com\/adobe\/assets\/urn:aaid:aem:/i,
+  // Dynamic Media classic / Scene7, e.g. https://s7ap1.scene7.com/is/image/foo/bar
+  /^https?:\/\/[^/]+\.scene7\.com\/is\/image\//i,
+];
+
+/**
+ * Checks if a URL is a known Adobe Assets / Dynamic Media delivery URL.
+ * @param {string} url The URL to check
+ * @returns {boolean} Whether the URL matches a known Adobe Assets/Dynamic Media pattern
+ */
+export function isAdobeAssetDeliveryUrl(url) {
+  return ADOBE_ASSET_DELIVERY_PATTERNS.some((pattern) => pattern.test(url));
+}
+
+/**
  * Process images
  * @param {Console} log
  * @param {object} tree
@@ -42,6 +71,12 @@ export async function processImages(
 
   const register = (node) => {
     const { url = '' } = node;
+    // only page-metadata images (og:image, twitter:image, etc.) get this exemption -
+    // regular body images are unaffected and keep today's exact rehosting behavior.
+    if (node.isMetadataImage && isAdobeAssetDeliveryUrl(url)) {
+      log.debug(`Skipping upload for Adobe Assets/Dynamic Media metadata URL: ${url}`);
+      return;
+    }
     if (!imageFilter(url)) {
       log.debug(`Skipping upload for image: ${url}`);
       return;
