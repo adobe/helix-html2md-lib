@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-env mocha */
 import assert from 'assert';
 import { SizeTooLargeException } from '@adobe/helix-mediahandler';
 import { processImages, TooManyImagesError } from '../src/mdast-process-images.js';

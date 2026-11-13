@@ -13,7 +13,6 @@ import assert from 'assert';
 import { gunzip } from 'zlib';
 import { promisify } from 'util';
 import nock from 'nock';
-import { Scope } from 'nock/lib/scope.js';
 
 const gunzipAsync = promisify(gunzip);
 
@@ -23,17 +22,6 @@ function extractMeta(hdrs) {
     .filter((key) => (key.startsWith('x-amz-meta-')))
     .reduce((prev, key) => ({ ...prev, [key.substring(11)]: hdrs[key] }), {});
 }
-/**
- * Add custom scope interceptor chain for multipart uploads
- */
-Scope.prototype.putObject = function putObject(path, expectedMeta, count = 1) {
-  return this.put(`${path}?x-id=PutObject`)
-    .times(count)
-    .reply(function reply() {
-      assert.deepStrictEqual(extractMeta(this.req.headers), expectedMeta);
-      return [201];
-    });
-};
 
 // eslint-disable-next-line import/prefer-default-export
 export function Nock() {
@@ -53,6 +41,12 @@ export function Nock() {
       scope = nock(url, opts);
       scopes[url] = scope;
     }
+    scope.putObject = (path, expectedMeta, count = 1) => scope.put(`${path}?x-id=PutObject`)
+      .times(count)
+      .reply(function reply() {
+        assert.deepStrictEqual(extractMeta(this.req.headers), expectedMeta);
+        return [201];
+      });
     if (!unmatched) {
       unmatched = [];
       nock.emitter.on('no match', noMatchHandler);
