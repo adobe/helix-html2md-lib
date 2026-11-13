@@ -1,3 +1,10 @@
+## [2.2.5](https://github.com/adobe/helix-html2md-lib/compare/v2.2.4...v2.2.5) (2026-11-13)
+
+
+### Bug Fixes
+
+* trigger release ([07d90bd](https://github.com/adobe/helix-html2md-lib/commit/07d90bdd5286d13bc0bcce7474751e0849c17ac1))
+
 ## [2.2.4](https://github.com/adobe/helix-html2md-lib/compare/v2.2.3...v2.2.4) (2026-09-07)
 
 
