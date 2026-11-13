@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-env mocha */
 import {
   PipelineRequest, PipelineResponse, PipelineState, htmlPipe,
 } from '@adobe/helix-html-pipeline';

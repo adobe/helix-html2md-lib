@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-env mocha */
-
 import assert from 'assert';
 import { readFile } from 'fs/promises';
 import { resolve } from 'path';
@@ -29,6 +27,7 @@ describe('Roundtrip tests', () => {
     }
     const expected = await readFile(resolve(__testdir, 'roundtrip/roundtrip-fixtures', `${spec}.output.html`), 'utf-8');
     const markdown = await html2md(input, { log: console, url: spec, ...opts });
+    // eslint-disable-next-line no-console
     console.log(markdown);
     const output = await render(url, markdown);
     assert.strictEqual(output.body?.trim(), expected.trim());
