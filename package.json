@@ -50,7 +50,7 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@adobe/eslint-config-helix": "3.0.33",
+    "@adobe/eslint-config-helix": "3.0.34",
     "@adobe/fetch": "4.3.2",
     "@adobe/helix-html-pipeline": "^6.33.4",
     "@eslint/config-helpers": "0.7.0",
