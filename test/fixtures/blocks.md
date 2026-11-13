@@ -155,54 +155,54 @@ Helix lets frontend devs develop and deploy the design and functionality of thei
 | Style   | highlight |
 +---------+-----------+
 
-+-------------------------------------------------------------------------------+
-| Metadata                                                                      |
-+----------------------+--------------------------------------------------------+
-| title                | Project Helix by Adobe                                 |
-+----------------------+--------------------------------------------------------+
-| description          | Frictionless experience management: Build blazing fast |
-|                      | websites using tools content creators and developers   |
-|                      | already know.                                          |
-+----------------------+--------------------------------------------------------+
-| og:title             | Project Helix by Adobe                                 |
-+----------------------+--------------------------------------------------------+
-| og:description       | Frictionless experience management: Build blazing fast |
-|                      | websites using tools content creators and developers   |
-|                      | already know.                                          |
-+----------------------+--------------------------------------------------------+
-| og:url               | https\://www\.hlx.live/home                            |
-+----------------------+--------------------------------------------------------+
-| og:image             | ![][image8]                                            |
-+----------------------+--------------------------------------------------------+
-| og:image:secure\_url | ![][image8]                                            |
-+----------------------+--------------------------------------------------------+
-| twitter:card         | summary\_large\_image                                  |
-+----------------------+--------------------------------------------------------+
-| twitter:title        | Project Helix by Adobe                                 |
-+----------------------+--------------------------------------------------------+
-| twitter:description  | Frictionless experience management: Build blazing fast |
-|                      | websites using tools content creators and developers   |
-|                      | already know.                                          |
-+----------------------+--------------------------------------------------------+
-| twitter:image        | ![][image8]                                            |
-+----------------------+--------------------------------------------------------+
-| robots               | noindex, nofollow                                      |
-+----------------------+--------------------------------------------------------+
++------------------------------------------------------------------------------+
+| Metadata                                                                     |
++---------------------+--------------------------------------------------------+
+| title               | Project Helix by Adobe                                 |
++---------------------+--------------------------------------------------------+
+| description         | Frictionless experience management: Build blazing fast |
+|                     | websites using tools content creators and developers   |
+|                     | already know.                                          |
++---------------------+--------------------------------------------------------+
+| og:title            | Project Helix by Adobe                                 |
++---------------------+--------------------------------------------------------+
+| og:description      | Frictionless experience management: Build blazing fast |
+|                     | websites using tools content creators and developers   |
+|                     | already know.                                          |
++---------------------+--------------------------------------------------------+
+| og:url              | https\://www\.hlx.live/home                            |
++---------------------+--------------------------------------------------------+
+| og:image            | ![][image8]                                            |
++---------------------+--------------------------------------------------------+
+| og:image:secure_url | ![][image8]                                            |
++---------------------+--------------------------------------------------------+
+| twitter:card        | summary_large_image                                    |
++---------------------+--------------------------------------------------------+
+| twitter:title       | Project Helix by Adobe                                 |
++---------------------+--------------------------------------------------------+
+| twitter:description | Frictionless experience management: Build blazing fast |
+|                     | websites using tools content creators and developers   |
+|                     | already know.                                          |
++---------------------+--------------------------------------------------------+
+| twitter:image       | ![][image8]                                            |
++---------------------+--------------------------------------------------------+
+| robots              | noindex, nofollow                                      |
++---------------------+--------------------------------------------------------+
 
-[image0]: ./media_11150c400cabf67c6baeb1d92d2adf99ab8941fb7.png?width=750&format=png&optimize=medium
+[image0]: ./media_11150c400cabf67c6baeb1d92d2adf99ab8941fb7.png?width=750\&format=png\&optimize=medium
 
-[image1]: ./media_102865949ac0b99cb9d73fe618ef550baa6736c1c.png?width=750&format=png&optimize=medium
+[image1]: ./media_102865949ac0b99cb9d73fe618ef550baa6736c1c.png?width=750\&format=png\&optimize=medium
 
-[image2]: ./media_19c6083921baecadc2b3e9bbfeef786934a3997ba.png?width=750&format=png&optimize=medium
+[image2]: ./media_19c6083921baecadc2b3e9bbfeef786934a3997ba.png?width=750\&format=png\&optimize=medium
 
-[image3]: ./media_17e5bea57c976d30ae9c77e8cb0b5863cc5882f81.png?width=750&format=png&optimize=medium
+[image3]: ./media_17e5bea57c976d30ae9c77e8cb0b5863cc5882f81.png?width=750\&format=png\&optimize=medium
 
-[image4]: ./media_1748ef54e01ead0d3a8f5b24f7dc3ae3ab40de9e6.png?width=750&format=png&optimize=medium
+[image4]: ./media_1748ef54e01ead0d3a8f5b24f7dc3ae3ab40de9e6.png?width=750\&format=png\&optimize=medium
 
-[image5]: ./media_1d880e70c58ce53f10feeddfa2ddb0df91c27f6ad.png?width=750&format=png&optimize=medium
+[image5]: ./media_1d880e70c58ce53f10feeddfa2ddb0df91c27f6ad.png?width=750\&format=png\&optimize=medium
 
-[image6]: ./media_1b8ff9e1931834386254be2c49c4424210fb0988c.png?width=750&format=png&optimize=medium
+[image6]: ./media_1b8ff9e1931834386254be2c49c4424210fb0988c.png?width=750\&format=png\&optimize=medium
 
-[image7]: ./media_1b5d4ed769249aadccd584894ceff3b1b0439747e.png?width=750&format=png&optimize=medium
+[image7]: ./media_1b5d4ed769249aadccd584894ceff3b1b0439747e.png?width=750\&format=png\&optimize=medium
 
-[image8]: https://www.hlx.live/media_112ad8fa392b52f2190d63f2017dd605ad4d4d13c.png?width=1200&format=pjpg&optimize=medium
+[image8]: https://www.hlx.live/media_112ad8fa392b52f2190d63f2017dd605ad4d4d13c.png?width=1200\&format=pjpg\&optimize=medium

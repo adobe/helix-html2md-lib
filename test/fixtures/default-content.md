@@ -14,11 +14,11 @@ Of course you can use a different operating system, browser and code editor, but
 
 ## Get started with the Helix Boilerplate Repository Template
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Video                                                                                                                                                     |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [https://main--helix-website--adobe.aem.page/media\_1d6e3d8e0e465fb2c43cdcb4c6ba8123693c86117.mp4](./media_1d6e3d8e0e465fb2c43cdcb4c6ba8123693c86117.mp4) |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Video                                                                                                                                                    |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [https://main--helix-website--adobe.aem.page/media_1d6e3d8e0e465fb2c43cdcb4c6ba8123693c86117.mp4](./media_1d6e3d8e0e465fb2c43cdcb4c6ba8123693c86117.mp4) |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 The fastest and easiest way to get started with all the best practices in AEM Helix is to create your repo using the helix boilerplate github repo as a template:
 
@@ -45,11 +45,11 @@ Congrats you are done, and have a new website running on `https://<branch>--<rep
 
 ## Link your own content source (Google Drive)
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Video                                                                                                                                                     |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [https://main--helix-website--adobe.aem.page/media\_1b16be8d758ce2d392315a7c306767a62516fa831.mp4](./media_1b16be8d758ce2d392315a7c306767a62516fa831.mp4) |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Video                                                                                                                                                    |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [https://main--helix-website--adobe.aem.page/media_1b16be8d758ce2d392315a7c306767a62516fa831.mp4](./media_1b16be8d758ce2d392315a7c306767a62516fa831.mp4) |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 In your fork the content points to an existing content source in gdrive, see [this folder](https://drive.google.com/drive/folders/1MGzOt7ubUh3gu7zhZIPb7R7dyRzG371j) with some example content in it.
 
@@ -78,11 +78,11 @@ Commit your changes, and you have completed the steps needed to hook up your own
 
 ## Preview and Publish your content
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Video                                                                                                                                                     |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [https://main--helix-website--adobe.aem.page/media\_1d7b6d38cd4f0ad9b661887e3a24b44a72f7c945e.mp4](./media_1d7b6d38cd4f0ad9b661887e3a24b44a72f7c945e.mp4) |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Video                                                                                                                                                    |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [https://main--helix-website--adobe.aem.page/media_1d7b6d38cd4f0ad9b661887e3a24b44a72f7c945e.mp4](./media_1d7b6d38cd4f0ad9b661887e3a24b44a72f7c945e.mp4) |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 After completing your last step, your new content source is possibly not completely empty, but no content has been promoted to the `preview` or `live `stages, which means your website should serve blank 404s at this point.
 
@@ -120,11 +120,11 @@ To complete the content of your site go through the same process with the `nav` 
 
 ## Start Developing Styling and Functionality
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Video                                                                                                                                                     |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [https://main--helix-website--adobe.aem.page/media\_141a9484b704e5113383b6ee92e09dd0ac352944a.mp4](./media_141a9484b704e5113383b6ee92e09dd0ac352944a.mp4) |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Video                                                                                                                                                    |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [https://main--helix-website--adobe.aem.page/media_141a9484b704e5113383b6ee92e09dd0ac352944a.mp4](./media_141a9484b704e5113383b6ee92e09dd0ac352944a.mp4) |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 To get started with development, it is easiest to install the helix-cli and clone your repo locally through via…
 
@@ -147,72 +147,72 @@ Once you are are ready to push your changes, simply git add, commit and push and
 
 **That’s it, you made it! Congrats, your first Helix site is up and running.**
 
-+-------------------------------------------------------------------------------+
-| Metadata                                                                      |
-+----------------------+--------------------------------------------------------+
-| title                | Getting started with Helix - Developer Tutorial        |
-+----------------------+--------------------------------------------------------+
-| description          | This tutorial should have you up and running with your |
-|                      | AEM Helix projects in 10 - 20 minutes to a place where |
-|                      | you can create, ...                                    |
-+----------------------+--------------------------------------------------------+
-| og:title             | Getting started with Helix - Developer Tutorial        |
-+----------------------+--------------------------------------------------------+
-| og:description       | This tutorial should have you up and running with your |
-|                      | AEM Helix projects in 10 - 20 minutes to a place where |
-|                      | you can create, ...                                    |
-+----------------------+--------------------------------------------------------+
-| og:url               | https\://www\.hlx.live/developer/tutorial              |
-+----------------------+--------------------------------------------------------+
-| og:image             | ![][image16]                                           |
-+----------------------+--------------------------------------------------------+
-| og:image:secure\_url | ![][image16]                                           |
-+----------------------+--------------------------------------------------------+
-| twitter:card         | summary\_large\_image                                  |
-+----------------------+--------------------------------------------------------+
-| twitter:title        | Getting started with Helix - Developer Tutorial        |
-+----------------------+--------------------------------------------------------+
-| twitter:description  | This tutorial should have you up and running with your |
-|                      | AEM Helix projects in 10 - 20 minutes to a place where |
-|                      | you can create, ...                                    |
-+----------------------+--------------------------------------------------------+
-| twitter:image        | ![][image16]                                           |
-+----------------------+--------------------------------------------------------+
-| template             | docs                                                   |
-+----------------------+--------------------------------------------------------+
-| robots               | noindex, nofollow                                      |
-+----------------------+--------------------------------------------------------+
++------------------------------------------------------------------------------+
+| Metadata                                                                     |
++---------------------+--------------------------------------------------------+
+| title               | Getting started with Helix - Developer Tutorial        |
++---------------------+--------------------------------------------------------+
+| description         | This tutorial should have you up and running with your |
+|                     | AEM Helix projects in 10 - 20 minutes to a place where |
+|                     | you can create, ...                                    |
++---------------------+--------------------------------------------------------+
+| og:title            | Getting started with Helix - Developer Tutorial        |
++---------------------+--------------------------------------------------------+
+| og:description      | This tutorial should have you up and running with your |
+|                     | AEM Helix projects in 10 - 20 minutes to a place where |
+|                     | you can create, ...                                    |
++---------------------+--------------------------------------------------------+
+| og:url              | https\://www\.hlx.live/developer/tutorial              |
++---------------------+--------------------------------------------------------+
+| og:image            | ![][image16]                                           |
++---------------------+--------------------------------------------------------+
+| og:image:secure_url | ![][image16]                                           |
++---------------------+--------------------------------------------------------+
+| twitter:card        | summary_large_image                                    |
++---------------------+--------------------------------------------------------+
+| twitter:title       | Getting started with Helix - Developer Tutorial        |
++---------------------+--------------------------------------------------------+
+| twitter:description | This tutorial should have you up and running with your |
+|                     | AEM Helix projects in 10 - 20 minutes to a place where |
+|                     | you can create, ...                                    |
++---------------------+--------------------------------------------------------+
+| twitter:image       | ![][image16]                                           |
++---------------------+--------------------------------------------------------+
+| template            | docs                                                   |
++---------------------+--------------------------------------------------------+
+| robots              | noindex, nofollow                                      |
++---------------------+--------------------------------------------------------+
 
-[image0]: ./media_165bab297e15a33f4742a4f20d8e0a3c3ba42511a.png?width=750&format=png&optimize=medium
+[image0]: ./media_165bab297e15a33f4742a4f20d8e0a3c3ba42511a.png?width=750\&format=png\&optimize=medium
 
-[image1]: ./media_15a342b8fddee4d58a6b5cdda64c13e785525a366.png?width=750&format=png&optimize=medium
+[image1]: ./media_15a342b8fddee4d58a6b5cdda64c13e785525a366.png?width=750\&format=png\&optimize=medium
 
-[image2]: ./media_15c1f25fc4f11bd34bb63ea9f0c99974be835b484.png?width=750&format=png&optimize=medium
+[image2]: ./media_15c1f25fc4f11bd34bb63ea9f0c99974be835b484.png?width=750\&format=png\&optimize=medium
 
-[image3]: ./media_1ea0bbbcde0c84f710fa79b6a08a2f146935aaa45.png?width=750&format=png&optimize=medium
+[image3]: ./media_1ea0bbbcde0c84f710fa79b6a08a2f146935aaa45.png?width=750\&format=png\&optimize=medium
 
-[image4]: ./media_1f81f632a43133455d59aa16af3b48cf1eee5a773.png?width=750&format=png&optimize=medium
+[image4]: ./media_1f81f632a43133455d59aa16af3b48cf1eee5a773.png?width=750\&format=png\&optimize=medium
 
-[image5]: ./media_1a25f536986e81a9ec28e8a67e30ea6dc145e79e0.png?width=750&format=png&optimize=medium
+[image5]: ./media_1a25f536986e81a9ec28e8a67e30ea6dc145e79e0.png?width=750\&format=png\&optimize=medium
 
-[image6]: ./media_1e7b9c243af2a857d0a431b20f07aadf2f9bfe562.png?width=750&format=png&optimize=medium
+[image6]: ./media_1e7b9c243af2a857d0a431b20f07aadf2f9bfe562.png?width=750\&format=png\&optimize=medium
 
-[image7]: ./media_19cdf2c1a7b5f93389828aa8de3660d85b7865a9f.png?width=750&format=png&optimize=medium
+[image7]: ./media_19cdf2c1a7b5f93389828aa8de3660d85b7865a9f.png?width=750\&format=png\&optimize=medium
 
-[image8]: ./media_1b86a3e704dd233972cce318e83a6dda44a787c1f.png?width=750&format=png&optimize=medium
+[image8]: ./media_1b86a3e704dd233972cce318e83a6dda44a787c1f.png?width=750\&format=png\&optimize=medium
 
-[image9]: ./media_1d7c76f6d5d0e2a5df540a25b77a8aefabfcd2e11.png?width=750&format=png&optimize=medium
+[image9]: ./media_1d7c76f6d5d0e2a5df540a25b77a8aefabfcd2e11.png?width=750\&format=png\&optimize=medium
 
-[image10]: ./media_158e5a49d59d14ad8f8259665927f11ee18fcae09.png?width=750&format=png&optimize=medium
+[image10]: ./media_158e5a49d59d14ad8f8259665927f11ee18fcae09.png?width=750\&format=png\&optimize=medium
 
-[image11]: ./media_161153232e3285a7eae3c82b903746c36e49ef8cc.png?width=750&format=png&optimize=medium
+[image11]: ./media_161153232e3285a7eae3c82b903746c36e49ef8cc.png?width=750\&format=png\&optimize=medium
 
-[image12]: ./media_19b6d313a098d6d8540a745e9ba4a82b1a2f1b801.png?width=750&format=png&optimize=medium
+[image12]: ./media_19b6d313a098d6d8540a745e9ba4a82b1a2f1b801.png?width=750\&format=png\&optimize=medium
 
-[image13]: ./media_1f6d66a54054c71b66bc67421a131c30d7490114c.png?width=750&format=png&optimize=medium
+[image13]: ./media_1f6d66a54054c71b66bc67421a131c30d7490114c.png?width=750\&format=png\&optimize=medium
 
-[image14]: ./media_1eba5dc6a44e0bb0b869153ad2b79b1904d5bdc07.png?width=750&format=png&optimize=medium
+[image14]: ./media_1eba5dc6a44e0bb0b869153ad2b79b1904d5bdc07.png?width=750\&format=png\&optimize=medium
 
-[image15]: ./media_172de918ec54e4a5f2267f64f63218b1ef0bf066b.png?width=750&format=png&optimize=medium
+[image15]: ./media_172de918ec54e4a5f2267f64f63218b1ef0bf066b.png?width=750\&format=png\&optimize=medium
 
-[image16]: https://www.hlx.live/developer/media_165bab297e15a33f4742a4f20d8e0a3c3ba42511a.png?width=1200&format=pjpg&optimize=medium
+[image16]: https://www.hlx.live/developer/media_165bab297e15a33f4742a4f20d8e0a3c3ba42511a.png?width=1200\&format=pjpg\&optimize=medium

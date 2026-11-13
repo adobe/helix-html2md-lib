@@ -82,55 +82,55 @@ Find some of our favorite staff picks below:
 | Style   | highlight |
 +---------+-----------+
 
-+----------------------------------------------------------------------------------+
-| Metadata                                                                         |
-+----------------------+-----------------------------------------------------------+
-| title                | Home \| Helix Project Boilerplate                         |
-+----------------------+-----------------------------------------------------------+
-| description          | Use this template repository as the starting point for    |
-|                      | new Helix projects.                                       |
-+----------------------+-----------------------------------------------------------+
-| og:title             | Home \| Helix Project Boilerplate                         |
-+----------------------+-----------------------------------------------------------+
-| og:description       | Use this template repository as the starting point for    |
-|                      | new Helix projects.                                       |
-+----------------------+-----------------------------------------------------------+
-| og:url               | https\://main--helix-project-boilerplate--adobe.hlx.live/ |
-+----------------------+-----------------------------------------------------------+
-| og:image             | ![][image10]                                              |
-+----------------------+-----------------------------------------------------------+
-| og:image:secure\_url | ![][image10]                                              |
-+----------------------+-----------------------------------------------------------+
-| og:image:alt         | Decorative double Helix                                   |
-+----------------------+-----------------------------------------------------------+
-| twitter:card         | summary\_large\_image                                     |
-+----------------------+-----------------------------------------------------------+
-| twitter:title        | Home \| Helix Project Boilerplate                         |
-+----------------------+-----------------------------------------------------------+
-| twitter:description  | Use this template repository as the starting point for    |
-|                      | new Helix projects.                                       |
-+----------------------+-----------------------------------------------------------+
-| twitter:image        | ![][image10]                                              |
-+----------------------+-----------------------------------------------------------+
++---------------------------------------------------------------------------------+
+| Metadata                                                                        |
++---------------------+-----------------------------------------------------------+
+| title               | Home \| Helix Project Boilerplate                         |
++---------------------+-----------------------------------------------------------+
+| description         | Use this template repository as the starting point for    |
+|                     | new Helix projects.                                       |
++---------------------+-----------------------------------------------------------+
+| og:title            | Home \| Helix Project Boilerplate                         |
++---------------------+-----------------------------------------------------------+
+| og:description      | Use this template repository as the starting point for    |
+|                     | new Helix projects.                                       |
++---------------------+-----------------------------------------------------------+
+| og:url              | https\://main--helix-project-boilerplate--adobe.hlx.live/ |
++---------------------+-----------------------------------------------------------+
+| og:image            | ![][image10]                                              |
++---------------------+-----------------------------------------------------------+
+| og:image:secure_url | ![][image10]                                              |
++---------------------+-----------------------------------------------------------+
+| og:image:alt        | Decorative double Helix                                   |
++---------------------+-----------------------------------------------------------+
+| twitter:card        | summary_large_image                                       |
++---------------------+-----------------------------------------------------------+
+| twitter:title       | Home \| Helix Project Boilerplate                         |
++---------------------+-----------------------------------------------------------+
+| twitter:description | Use this template repository as the starting point for    |
+|                     | new Helix projects.                                       |
++---------------------+-----------------------------------------------------------+
+| twitter:image       | ![][image10]                                              |
++---------------------+-----------------------------------------------------------+
 
-[image0]: ./media_12637fbb67cddc5d293b20975e89028d919270ac0.jpeg?width=750&format=jpeg&optimize=medium
+[image0]: ./media_12637fbb67cddc5d293b20975e89028d919270ac0.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image1]: ./media_17e9dd0aae03d62b8ebe2159b154d6824ef55732d.png?width=750&format=png&optimize=medium
+[image1]: ./media_17e9dd0aae03d62b8ebe2159b154d6824ef55732d.png?width=750\&format=png\&optimize=medium
 
-[image2]: ./media_143cf1a441962c90f082d4f7dba2aeefb07f4e821.png?width=750&format=png&optimize=medium
+[image2]: ./media_143cf1a441962c90f082d4f7dba2aeefb07f4e821.png?width=750\&format=png\&optimize=medium
 
-[image3]: ./media_1f9dc2fa1ffa3f8064411fefb0913d09b434c3345.jpeg?width=750&format=jpeg&optimize=medium
+[image3]: ./media_1f9dc2fa1ffa3f8064411fefb0913d09b434c3345.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image4]: ./media_164228d719efbe210030ba16982dddb5af294267d.jpeg?width=750&format=jpeg&optimize=medium
+[image4]: ./media_164228d719efbe210030ba16982dddb5af294267d.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image5]: ./media_1e48ab637eaa59d36bfb74c8c3cc1eafc117b9276.jpeg?width=750&format=jpeg&optimize=medium
+[image5]: ./media_1e48ab637eaa59d36bfb74c8c3cc1eafc117b9276.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image6]: ./media_13188f1b63b8c968cec7dfccef4fdfc6a9e6f70b5.jpeg?width=750&format=jpeg&optimize=medium
+[image6]: ./media_13188f1b63b8c968cec7dfccef4fdfc6a9e6f70b5.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image7]: ./media_1c636300a4d38afed5441e542fd6d7241839844b0.jpeg?width=750&format=jpeg&optimize=medium
+[image7]: ./media_1c636300a4d38afed5441e542fd6d7241839844b0.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image8]: ./media_1362767d232221ff20c67bc0694a8924d483687b1.jpeg?width=750&format=jpeg&optimize=medium
+[image8]: ./media_1362767d232221ff20c67bc0694a8924d483687b1.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image9]: ./media_1a620138deb385f05412f4f96f9b18e454a769c76.jpeg?width=750&format=jpeg&optimize=medium
+[image9]: ./media_1a620138deb385f05412f4f96f9b18e454a769c76.jpeg?width=750\&format=jpeg\&optimize=medium
 
-[image10]: https://main--helix-project-boilerplate--adobe.hlx.live/media_12637fbb67cddc5d293b20975e89028d919270ac0.jpeg?width=1200&format=pjpg&optimize=medium
+[image10]: https://main--helix-project-boilerplate--adobe.hlx.live/media_12637fbb67cddc5d293b20975e89028d919270ac0.jpeg?width=1200\&format=pjpg\&optimize=medium
