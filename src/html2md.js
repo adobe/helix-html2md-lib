@@ -29,6 +29,9 @@ import { CONTINUE, visit } from 'unist-util-visit';
 import { processImages } from './mdast-process-images.js';
 import { processIcons } from './hast-process-icons.js';
 import {
+  isSafeUrl, sanitizeUrls, UNSAFE_URL_REPLACEMENT, URL_META,
+} from './mdast-sanitize-urls.js';
+import {
   TYPE_GRID_TABLE,
   TYPE_GT_BODY,
   TYPE_GT_CELL,
@@ -110,7 +113,15 @@ function assertMetaSizeLimit(str, limit = 128_000) {
   return str;
 }
 
-function addMetadata(hast, mdast, maxMetadataSize) {
+function safeMetaUrl(log, key, url) {
+  if (isSafeUrl(url)) {
+    return url;
+  }
+  log.warn(`Replacing unsafe ${key} url: ${String(url).substring(0, 64)}`);
+  return UNSAFE_URL_REPLACEMENT;
+}
+
+function addMetadata(log, hast, mdast, maxMetadataSize) {
   const meta = new Map();
 
   const head = select('head', hast);
@@ -124,6 +135,8 @@ function addMetadata(hast, mdast, maxMetadataSize) {
       if (key && !HELIX_META[key]) {
         if (key === 'image' || key === 'twitter:image' || key === 'og:image' || key === 'og:image:secure_url') {
           meta.set(text(key), image(assertMetaSizeLimit(content, maxMetadataSize)));
+        } else if (URL_META.has(key.toLowerCase())) {
+          meta.set(text(key), text(safeMetaUrl(log, key, assertMetaSizeLimit(content, maxMetadataSize))));
         } else {
           meta.set(text(key), text(assertMetaSizeLimit(content, maxMetadataSize)));
         }
@@ -146,7 +159,7 @@ function addMetadata(hast, mdast, maxMetadataSize) {
   links.forEach((link) => {
     const { hrefLang, href } = link.properties;
     if (hrefLang) {
-      meta.set(text(`hreflang-${hrefLang}`), text(href));
+      meta.set(text(`hreflang-${hrefLang}`), text(safeMetaUrl(log, `hreflang-${hrefLang}`, href)));
     }
   });
 
@@ -370,7 +383,8 @@ export async function html2md(html, opts) {
   });
 
   cleanupFormats(mdast);
-  addMetadata(hast, mdast, opts.maxMetadataSize);
+  addMetadata(log, hast, mdast, opts.maxMetadataSize);
+  sanitizeUrls(log, mdast);
 
   let { imageFilter } = opts;
   if (!imageFilter && opts.externalImageUrlPrefixes) {

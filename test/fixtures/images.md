@@ -42,7 +42,7 @@
 
 [image5]: about:blank
 
-[image6]: https://about:error
+[image6]: about:error
 
 [image7]: https://api.aem.live/adobe/assets/urn:aaid:aem:abcd
 
