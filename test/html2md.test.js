@@ -69,6 +69,10 @@ describe('html2md Tests', () => {
     await test('blocks-with-alignment');
   });
 
+  it('replaces unsafe urls and keeps html in text escaped', async () => {
+    await test('unsafe-urls');
+  });
+
   it('converts a document with multiple sections', async () => {
     await test('multiple-sections');
   });

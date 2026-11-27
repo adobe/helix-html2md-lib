@@ -1,0 +1,41 @@
+<html>
+
+<head>
+  <title>Unsafe URLs</title>
+  <meta property="og:image" content="javascript:alert('og')">
+  <meta name="image" content="https://www.example.com/image.png">
+  <meta name="canonical" content="javascript:alert('canonical')">
+  <meta property="og:url" content="https://www.example.com/page">
+  <meta name="twitter:url" content=" JaVaScRiPt:alert('twitter')">
+  <meta property="og:video:secure_url" content="data:text/html,<script>alert(1)</script>">
+  <meta name="description" content="Note: not a url">
+  <link rel="alternate" hreflang="de" href="javascript:alert('hreflang')">
+  <link rel="alternate" hreflang="fr" href="https://www.example.com/fr/">
+</head>
+
+<body>
+  <main>
+    <div>
+      <h1>Unsafe URLs</h1>
+      <p><a href="javascript:alert(document.cookie)">click me</a></p>
+      <p><a href=" JaVa&#x09;ScRiPt:alert(1)">obfuscated</a></p>
+      <p><a href="vbscript:msgbox(1)">vbscript</a></p>
+      <p><a href="data:text/html,<script>alert(1)</script>">data</a></p>
+      <p><a href="javascript:alert(1)">javascript:alert(1)</a></p>
+      <p><a href="https://[invalid/">invalid</a></p>
+      <p><a href="https://www.example.com/">https</a> <a href="mailto:info@example.com">mail</a> <a href="tel:+15551234">tel</a> <a href="/relative">relative</a> <a href="#top">fragment</a></p>
+      <p><img src="javascript:alert('img')"></p>
+      <p><img src="data:image/png;base64,iVBORw0KGgo="></p>
+      <p><img src="vbscript:msgbox(1)"></p>
+      <p>&lt;img src=x onerror=alert(1)&gt; and &lt;a href="javascript:alert(1)"&gt;x&lt;/a&gt;</p>
+      <div class="cards">
+        <div>
+          <div><a href="javascript:alert('block')">block link</a></div>
+          <div><a href="https://www.example.com/block">safe block link</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
